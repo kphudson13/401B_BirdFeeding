@@ -140,20 +140,26 @@ violin_plot <- ggplot(data = diversity_per,
                           fill = Location)) +
   geom_violin(draw_quantiles = 0.5) +
   scale_x_discrete(limits = order) +
-  scale_y_continuous(breaks = 4) +
+  scale_y_continuous(n.breaks = 7) +
   v_theme +
   geom_text(data = letters.df, 
             aes(y = Max+1, label = Letters),
             size = 5,
             position = position_dodge(0.9)) +
   scale_fill_manual(values = c("darkmagenta","slategrey"),
-                  name="") 
+                  name="") +
+  geom_point(position = position_jitterdodge(jitter.height = 0.15,
+                                             jitter.width = 0.05,
+                                             dodge.width = 0.9),
+             alpha = 0.5,
+             size = 1.3)
 
 #this sets the plot background and pastes the plot on it
 grid.newpage()
 grid.draw(back)
 print(violin_plot, 
       newpage = FALSE)
+
 
 
   
