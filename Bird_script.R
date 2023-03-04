@@ -121,13 +121,13 @@ v_theme <- theme(axis.line = element_line(colour = "black",
                                           linewidth = 0.6),
                  panel.background = element_blank(),
                  panel.grid = element_blank(),
-                 legend.background = element_rect(colour = "black",),
+                 legend.background = element_blank(),
                  legend.title = element_text(face = "bold"),
                  axis.title = element_text(face = "bold"),
                  plot.background = element_blank())
 
 #set the colours for the background
-my_colour <- c("grey70", "skyblue")
+my_colour <- c("grey90", "#ccdbe4")
 back <- rasterGrob(my_colour, 
                    width = unit(1, "npc"), 
                    height = unit(1, "npc"), 
@@ -145,18 +145,9 @@ violin_plot <- ggplot(data = diversity_per,
   geom_text(data = letters.df, 
             aes(y = Max+1, label = Letters),
             size = 5,
-            position = position_dodge(0.9)) 
-
-
-  #scale_fill_manual(values = c("darkmagenta","slategrey"),
-  #                  name="")
-
-  #scale_fill_discrete(fill = "Location", values = c("yellow", "purple"),
-   #                   type = getOption("ggplot2.discrete.fill"))
-
-
-  #scale_fill_manual(values = c("yellow", "purple"),
-   #                 name="") 
+            position = position_dodge(0.9)) +
+  scale_fill_manual(values = c("darkmagenta","slategrey"),
+                  name="") 
 
 #this sets the plot background and pastes the plot on it
 grid.newpage()
