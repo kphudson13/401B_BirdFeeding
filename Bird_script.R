@@ -1,8 +1,8 @@
 library(tidyverse)
 library(AICcmodavg) #to run AIC models
+library(gridExtra) #to export tables nicely
 library(grid) #for setting the plot backgrounds 
 library(multcompView) #add the letters for pairwise comparisons 
-
 
 bird.data <- read.csv("Bird_Data.csv",
                       header = TRUE,
@@ -31,17 +31,12 @@ spp_list <-
 
 ##### Create Diversity Data Frames #####
 
-#diversity per location
+#diversity per location per day
 diversity_loc <-
   bird.data %>%
-  group_by(Location) %>%
+  group_by(Location, Date) %>%
   summarise(Diversity = length(unique(Species)))
 
-#diversity per period
-diversity_time <- 
-  bird.data %>%
-  group_by(Period) %>% 
-  summarise(Diversity = length(unique(Species)))
 
 #diversity per session
 diversity_per <- 
@@ -50,22 +45,24 @@ diversity_per <-
   summarise(Diversity = length(unique(Species)))
 
 
+
 ##### Statistics #####
 
-#check for normality 
-ggplot(diversity_per, aes(x = Diversity, y = after_stat(density))) +
-  geom_histogram(binwidth = 1) +
-  facet_grid(cols = vars(Period), rows = vars(Location))
-  
-  
+#this will get overwritten but its one way to code a t-test
+t_model <- with(diversity_loc, 
+                t.test(Diversity[Location == "Canada"],
+                       Diversity[Location == "Panama"]))
 
-#run an additave model 
+#a t-test to see if there is a difference between the countries 
+t_model <- t.test(Diversity ~ Location, data = diversity_loc)
+
+#run an additive ANOVA model 
 add_model <- aov(Diversity ~ Period + Location, 
                  data = diversity_per)
 
 summary(add_model)
 
-#run a model with the interaction effect
+#run an ANOVA model with the interaction effect
 full_model <- aov(Diversity ~ Period * Location, 
                  data = diversity_per)
 
@@ -78,7 +75,101 @@ AIC(add_model, full_model)
 #Tukey test to see which ones are different 
 tukey_out <- TukeyHSD(full_model, conf.level = 0.95)
 
-##### letters for plot #####
+##### Tukey Table #####
+
+#Turn the tukey pairwise output into a table
+TuChart <- as.data.frame(tukey_out$`Period:Location`)
+
+#change the header names
+names(TuChart) <- c("Difference", 
+                    "Lower Est.",
+                    "Upper Est.",
+                    "Adjusted P-Value")
+
+#round and clean the tukey output
+TuChart <- 
+  TuChart %>% 
+  mutate(across(c(1:3), round, 3)) %>% 
+  mutate(`Adjusted P-Value` = round(`Adjusted P-Value`, 2)) %>% 
+  mutate(`Adjusted P-Value` = 
+           format(`Adjusted P-Value`, scientific = FALSE)) %>% 
+  mutate(`Adjusted P-Value` = as.numeric(`Adjusted P-Value`))
+  
+#turn all the small p values into <0.05
+for(i in 1:nrow(TuChart)) {
+  if(TuChart[i,4] < 0.05) {
+    TuChart[i,4] = "<0.05"
+  }
+}
+
+
+#export the summary stats
+png("Tukey_Chart.png", 
+    height = 90*nrow(TuChart), 
+    width = 600*ncol(TuChart),
+    res = 288)
+grid.table(TuChart)
+dev.off()
+
+##### T-Test Validation #####
+
+#check for normality 
+T_Hist <- 
+  ggplot(diversity_loc, aes(x = Diversity, y = after_stat(density))) +
+  geom_histogram(binwidth = 1) +
+  ylab("Density") +
+  facet_grid(cols = vars(Location))
+
+#save the histogram as a png
+ggsave("T_Hist.png", T_Hist, width = 8, height = 4, dpi = 300)
+
+#QQ plot for standarized residuals 
+T_QQ <- 
+  ggplot(data.frame(residuals(t_model)), aes(sample = Diversity)) +
+  geom_qq() + 
+  geom_qq_line() +
+  xlab("Theoretical Quantiles") +
+  ylab("Standardized Residuals") 
+
+#save the histogram as a png
+#ggsave("T_QQ.png", T_QQ, width = 8, height = 5, dpi = 300)
+
+##### ANOVA Validation #####
+
+#check for normality 
+AOV_Hist <- 
+  ggplot(diversity_per, aes(x = Diversity, y = after_stat(density))) +
+  geom_histogram(binwidth = 1) +
+  ylab("Density") +
+  facet_grid(cols = vars(Period), rows = vars(Location))
+
+#save the histogram as a png
+ggsave("ANOVA_Hist.png", AOV_Hist, width = 8, height = 5, dpi = 300)
+
+#QQ plot for standarized residuals not faceted
+AOV_QQ_Sing <- 
+  ggplot(full_model, aes(sample = Diversity)) +
+  geom_qq() + 
+  geom_qq_line() +
+  xlab("Theoretical Quantiles") +
+  ylab("Standardized Residuals") 
+
+#save the histogram as a png
+ggsave("ANOVA_QQ_Sing.png", AOV_QQ_Sing, width = 8, height = 5, dpi = 300)
+
+#QQ plot for standarized residuals 
+AOV_QQ <- 
+  ggplot(full_model, aes(sample = Diversity)) +
+  geom_qq() + 
+  geom_qq_line() +
+  xlab("Theoretical Quantiles") +
+  ylab("Standardized Residuals") +
+  facet_grid(cols = vars(Period), rows = vars(Location))
+
+#save the histogram as a png
+ggsave("ANOVA_QQ.png", AOV_QQ, width = 8, height = 5, dpi = 300)
+  
+##### Letters for plot #####
 
 #create a data frame for the letters 
 letters.df <- 
@@ -152,7 +243,8 @@ violin_plot <- ggplot(data = diversity_per,
                                              jitter.width = 0.05,
                                              dodge.width = 0.9),
              alpha = 0.5,
-             size = 1.3)
+             size = 1.3) +
+  guides(fill = guide_legend(override.aes = aes(size = 1)))
 
 #this sets the plot background and pastes the plot on it
 grid.newpage()
