@@ -1,0 +1,21 @@
+#set the colours for the background
+my_pattern <- colorRampPalette(c("grey90", "#ccdbe4"))
+
+my_ramp <- my_pattern(100)
+
+my_rect <- element_rect(fill = my_ramp, colour = NA)
+
+
+
+#set the colours for the background
+#my_colour <- c("grey90", "#ccdbe4")
+#back <- rasterGrob(my_colour, 
+#                   width = unit(1, "npc"), 
+#                   height = unit(1, "npc"), 
+#                   interpolate = TRUE)
+
+#this sets the plot background and pastes the plot on it
+#grid.newpage()
+#grid.draw(back)
+#print(violin_plot, 
+#      newpage = FALSE)

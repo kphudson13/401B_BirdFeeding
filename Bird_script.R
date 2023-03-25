@@ -3,6 +3,7 @@ library(AICcmodavg) #to run AIC models
 library(gridExtra) #to export tables nicely
 library(grid) #for setting the plot backgrounds 
 library(multcompView) #add the letters for pairwise comparisons 
+library(ggpattern) #for the gradient pattern background
 
 bird.data <- read.csv("Bird_Data.csv",
                       header = TRUE,
@@ -202,10 +203,7 @@ for(i in 1:6){
 }
 
 
-##### Plots #####
-
-#reorder the x axis
-order = c("Dawn", "Noon", "Dusk")
+##### Location Plot #####
 
 #set a theme
 v_theme <- theme(axis.line = element_line(colour = "black", 
@@ -215,17 +213,38 @@ v_theme <- theme(axis.line = element_line(colour = "black",
                  legend.background = element_blank(),
                  legend.title = element_text(face = "bold"),
                  axis.title = element_text(face = "bold"),
-                 plot.background = element_blank())
+                 plot.background = element_rect(fill = "grey90"))
 
-#set the colours for the background
-my_colour <- c("grey90", "#ccdbe4")
-back <- rasterGrob(my_colour, 
-                   width = unit(1, "npc"), 
-                   height = unit(1, "npc"), 
-                   interpolate = TRUE)
+#make a plot of diversity per location
+location_plot <-
+  ggplot(data = diversity_loc, 
+         aes(x = Location, 
+             y = Diversity, 
+             fill = Location)) +
+  geom_violin(draw_quantiles = 0.5, 
+              show.legend = FALSE,
+               width = 0.5) +
+  v_theme +
+  scale_fill_manual(values = c("darkmagenta","slategrey"),
+                    name="") +
+  geom_jitter(show.legend = FALSE,
+              alpha = 0.5,
+              size = 1.3,
+              width = 0.06)
+  
 
-#plot for the location
-violin_plot <- ggplot(data = diversity_per, 
+location_plot
+
+#save the boxplot as a png
+ggsave("Location_Plot.png", location_plot, width = 5, height = 5, dpi = 400)
+
+##### Combined Plot #####
+
+#reorder the x axis
+order = c("Dawn", "Noon", "Dusk")
+
+#plot for location and period
+combined_plot <- ggplot(data = diversity_per, 
                       aes(x = Period,
                           y = Diversity,
                           fill = Location)) +
@@ -243,17 +262,16 @@ violin_plot <- ggplot(data = diversity_per,
                                              jitter.width = 0.05,
                                              dodge.width = 0.9),
              alpha = 0.5,
-             size = 1.3) +
-  guides(fill = guide_legend(override.aes = aes(size = 1)))
-
-#this sets the plot background and pastes the plot on it
-grid.newpage()
-grid.draw(back)
-print(violin_plot, 
-      newpage = FALSE)
+             size = 1.3, 
+             show.legend = FALSE) 
 
 
+#to change the shape of the fill legend but it doesnt work
+#guides(fill = guide_legend(override.aes = list(shape = 24)))
 
-  
 
+combined_plot
+
+#save the histogram as a png
+ggsave("Combined_Plot.png", combined_plot, width = 8, height = 5, dpi = 400)
   
