@@ -4,6 +4,7 @@ library(gridExtra) #to export tables nicely
 library(grid) #for setting the plot backgrounds 
 library(multcompView) #add the letters for pairwise comparisons 
 library(ggpattern) #for the gradient pattern background
+library(knitr)
 
 bird.data <- read.csv("Bird_Data.csv",
                       header = TRUE,
@@ -76,7 +77,77 @@ AIC(add_model, full_model)
 #Tukey test to see which ones are different 
 tukey_out <- TukeyHSD(full_model, conf.level = 0.95)
 
-##### Tukey Table #####
+
+##### Mean and SD Tables #####
+
+summary_loc <-
+  diversity_loc %>% 
+  group_by(Location) %>% 
+  summarise(Mean = mean(Diversity, na.rm=T), #adds the mean
+            SD = sd(Diversity, na.rm = T)) %>% #adds with sd
+  as.data.frame() %>% 
+  `row.names<-`(.$Location) %>% #how to set row names within a pipe
+  subset(., select = -c(1)) %>%  #cut out the first column
+  mutate(across(c(1:2), round, 2))
+
+#export the summary stats
+png("Location_Chart.png", 
+    height = 110*nrow(summary_loc), 
+    width = 300*ncol(summary_loc),
+    res = 288)
+grid.table(summary_loc)
+dev.off()
+  
+#data frame for mean and sd per location and period
+summary_per <-
+  diversity_per %>% 
+  group_by(Location, Period) %>% 
+  summarise(Mean = mean(Diversity, na.rm=T), #adds the mean
+            SD = sd(Diversity, na.rm = T)) %>% #adds with sd
+  unite("r_names", 
+        Period:Location, 
+        sep = ":", 
+        remove = TRUE) %>% #combine two columns
+  as.data.frame() %>% 
+  `row.names<-`(.$r_names) %>%   #how to set row names within a pipe
+  subset(., select = -c(1)) %>%  #cut out the first column
+  mutate(across(c(1:2), round, 2))
+
+#export the summary stats
+png("Per_Chart.png", 
+    height = 90*nrow(summary_per), 
+    width = 400*ncol(summary_per),
+    res = 288)
+grid.table(summary_per)
+dev.off()
+  
+##### ANOVA and Tukey Table #####
+
+#create a data frame of the anova output 
+full_out <- summary(full_model)
+
+full_chart <- 
+  as.data.frame(full_out[[1]]) %>% 
+  mutate(across(c(2:5), round, 2)) %>% 
+  replace(., is.na(.), "")
+
+#turn all the small p values into <0.05
+for(i in 1:nrow(full_chart)) {
+  if(full_chart[i,5] < 0.05) {
+    full_chart[i,5] = "<0.05"
+  }
+}
+  
+#remove that unneccesary p-value
+full_chart[4,5] <- "" 
+
+#export the summary stats
+png("ANOVA_Chart.png", 
+    height = 110*nrow(full_chart), 
+    width = 300*ncol(full_chart),
+    res = 288)
+grid.table(full_chart)
+dev.off()
 
 #Turn the tukey pairwise output into a table
 TuChart <- as.data.frame(tukey_out$`Period:Location`)
