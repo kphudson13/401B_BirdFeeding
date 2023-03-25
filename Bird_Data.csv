@@ -22,7 +22,7 @@ Panama,Jenni ,5,2023-01-24,Dusk,18:06:20,6:41:00,18:24:00,Crimson-backed_Tanager
 Panama,Jenni ,5,2023-01-24,Dusk,18:06:20,6:41:00,18:24:00,Ochre-bellied_Flycathcer,1,25
 Panama,Jenni ,5,2023-01-24,Dusk,18:06:21,6:41:00,18:24:00,Swaison_Thrush,2,25
 Panama,Jenni ,5,2023-01-24,Dusk,18:07:14,6:41:00,18:24:00,Palm_Tanager,1,25
-Panama,Jenni ,5,2023-01-24,Dusk,18:07:16,6:41:00,18:24:00,Buff-throated_Salator,2,25
+Panama,Jenni ,5,2023-01-24,Dusk,18:07:16,6:41:00,18:24:00,Buff-throated_Saltator,2,25
 Panama,Jenni ,5,2023-01-24,Dusk,18:10:07,6:41:00,18:24:00,Blue-gray_Tanager,1,25
 Panama,Jenni ,5,2023-01-24,Dusk,18:11:19,6:41:00,18:24:00,Olive-striped_Flycatcher,2,25
 Panama,Jenni ,5,2023-01-24,Dusk,18:15:58,6:41:00,18:24:00,Gray-headed_Chachalaca,1,25
@@ -41,7 +41,7 @@ Canada,Jodie ,8,2023-01-27,Dawn,8:21:15,8:21:00,17:30:00,Black-capped_Chickadee,
 Canada,Jodie ,8,2023-01-27,Dawn,8:44:32,8:21:00,17:30:00,Blue_ Jay,2,-6
 Panama,Jodie ,9,2023-01-27,Noon,12:13:55,6:38:00,18:22:00,Clay-colored_Thrush,2,28
 Panama,Jodie ,9,2023-01-27,Noon,12:13:55,6:38:00,18:22:00,Red-crowned_Ant-Tanager,1,28
-Panama,Jodie ,9,2023-01-27,Noon,12:13:14,6:38:00,18:22:00,Buff-throated_Salator,2,28
+Panama,Jodie ,9,2023-01-27,Noon,12:13:14,6:38:00,18:22:00,Buff-throated_Saltator,2,28
 Panama,Jodie ,9,2023-01-27,Noon,12:14:50,6:38:00,18:22:00,Blue-gray_Tanager,1,28
 Panama,Jodie ,9,2023-01-27,Noon,12:16:17,6:38:00,18:22:00,Chestnut-headed_Oropendola,1,28
 Panama,Jodie ,9,2023-01-27,Noon,12:20:20,6:38:00,18:22:00,**Humming_Bird_Unknown***,1,28
@@ -87,7 +87,7 @@ Panama,Kyle,16,2023-01-30,Noon,12:19:00,6:41:00,18:27:00,Chestnut-headed_Oropend
 Canada,Kyle,17,2023-01-30,Dusk,12:11:00,8:16:00,17:38:00,Black-capped_Chickadee,8,-28
 Panama,Jenni,18,2023-01-31,Dawn,7:03:01,6:42:00,18:27:00,Gray-headed_Chachalaca,5,28
 Panama,Jenni,18,2023-01-31,Dawn,7:10:44,6:42:00,18:27:00,Clay-colored_Thrush,4,28
-Panama,Jenni,18,2023-01-31,Dawn,7:11:19,6:42:00,18:27:00,Buff-throated_Salator,1,28
+Panama,Jenni,18,2023-01-31,Dawn,7:11:19,6:42:00,18:27:00,Buff-throated_Saltator,1,28
 Panama,Jenni,18,2023-01-31,Dawn,7:18:43,6:42:00,18:27:00,Blue-gray_Tanager,2,28
 Panama,Jenni,18,2023-01-31,Dawn,7:22:33,6:42:00,18:27:00,Lesser_Elaenia,1,28
 Panama,Jenni,18,2023-01-31,Dawn,7:25:08,6:42:00,18:27:00,Black-chested_Jay,1,28
@@ -110,7 +110,7 @@ Panama,Jenni,22,2023-01-31,Dusk,18:00:38,6:42:00,18:27:00,Red-crowned_Ant-Tanage
 Panama,Jenni,22,2023-01-31,Dusk,18:00:48,6:42:00,18:27:00,Crimson-backed_Tanager,1,23
 Panama,Jenni,22,2023-01-31,Dusk,18:01:09,6:42:00,18:27:00,Blue-gray_Tanager,2,23
 Panama,Jenni,22,2023-01-31,Dusk,18:01:54,6:42:00,18:27:00,Olive-striped_Flycatcher,1,23
-Panama,Jenni,22,2023-01-31,Dusk,18:11:10,6:42:00,18:27:00,Buff-throated_Salator,1,23
+Panama,Jenni,22,2023-01-31,Dusk,18:11:10,6:42:00,18:27:00,Buff-throated_Saltator,1,23
 Canada,Jenni,23,2023-01-31,Dusk,17:38:37,8:15:00,17:38:00,Black-capped_Chickadee,2,-22
 Panama,Jodie,24,2023-02-03,Dawn,,6:39:00,18:25:00,Black-chested_Jay,1,21
 Panama,Jodie,24,2023-02-03,Dawn,,6:39:00,18:25:00,Red-crowned_Ant-Tanager,1,21
@@ -160,7 +160,7 @@ Canada,Jenni ,31,2023-02-07,Dawn,,8:05:00,17:50:00,Pine_Grosbeak,2,0
 Canada,Jenni ,31,2023-02-07,Dawn,,8:05:00,17:50:00,Evening_Grosbeak,3,0
 Canada,Jenni ,31,2023-02-07,Dawn,,8:05:00,17:50:00,Blue_Jay,2,0
 Canada,Jenni ,31,2023-02-07,Dawn,,8:05:00,17:50:00,Black-capped_Chickadee,1,0
-Panama,Jenni ,32,2023-02-07,Noon,,6:41:38,18:29:33,Buff-throated_Salator,1,28
+Panama,Jenni ,32,2023-02-07,Noon,,6:41:38,18:29:33,Buff-throated_Saltator,1,28
 Panama,Jenni ,32,2023-02-07,Noon,,6:41:38,18:29:33,Summer_Tanager,1,28
 Panama,Jenni ,32,2023-02-07,Noon,,6:41:38,18:29:33,Clay-colored_Thrush,2,28
 Canada,Jenni ,33,2023-02-07,Noon,,8:05:00,17:50:00,Common_Redpoll,7,0
@@ -169,7 +169,7 @@ Canada,Jenni ,33,2023-02-07,Noon,,8:05:00,17:50:00,Pine_Grosbeak,4,0
 Panama,Jenni ,34,2023-02-07,Dusk,,6:41:38,18:29:33,Summer_Tanager,2,24
 Panama,Jenni ,34,2023-02-07,Dusk,,6:41:38,18:29:33,Rufous_Motmot,4,24
 Panama,Jenni ,34,2023-02-07,Dusk,,6:41:38,18:29:33,Gray-headed_Chachalaca,3,24
-Panama,Jenni ,34,2023-02-07,Dusk,,6:41:38,18:29:33,Buff-throated_Salator,2,24
+Panama,Jenni ,34,2023-02-07,Dusk,,6:41:38,18:29:33,Buff-throated_Saltator,2,24
 Panama,Jenni ,34,2023-02-07,Dusk,,6:41:38,18:29:33,Olive-striped_Flycatcher,2,24
 Panama,Jenni ,34,2023-02-07,Dusk,,6:41:38,18:29:33,Clay-colored_Thrush,1,24
 Panama,Jenni ,34,2023-02-07,Dusk,,6:41:38,18:29:33,Crimson-backed_Tanager,2,24
@@ -193,7 +193,7 @@ Panama,Kyle,40,2023-02-08,Noon,,6:40:00,18:29:00,Clay-colored_Thrush,7,24
 Panama,Kyle,40,2023-02-08,Noon,,6:40:00,18:29:00,Crimson-backed_Tanager,4,24
 Panama,Kyle,40,2023-02-08,Noon,,6:40:00,18:29:00,Summer_Tanager,3,24
 Panama,Kyle,40,2023-02-08,Noon,,6:40:00,18:29:00,Blue-gray_Tanager,2,24
-Panama,Kyle,40,2023-02-08,Noon,,6:40:00,18:29:00,Buff-throated_Salator,1,24
+Panama,Kyle,40,2023-02-08,Noon,,6:40:00,18:29:00,Buff-throated_Saltator,1,24
 Panama,Kyle,40,2023-02-08,Noon,,6:40:00,18:29:00,Palm_Tanager,2,24
 Panama,Kyle,40,2023-02-08,Noon,,6:40:00,18:29:00,**Humming_Bird_Unknown***,1,24
 Canada,Kyle,41,2023-02-08,Dusk,,8:04:00,17:52:00,Common_Redpoll,3,-11
@@ -205,7 +205,7 @@ Panama,Kyle,42,2023-02-08,Dusk,,6:40:00,18:29:00,Orange-bellied_Euphonia,1,23
 Panama,Kyle,42,2023-02-08,Dusk,,6:40:00,18:29:00,Rufous_Motmot,1,23
 Panama,Kyle,42,2023-02-08,Dusk,,6:40:00,18:29:00,**Humming_Bird_Unknown***,1,23
 Panama,Kyle,42,2023-02-08,Dusk,,6:40:00,18:29:00,Crimson-backed_Tanager,1,23
-Panama,Kyle,42,2023-02-08,Dusk,,6:40:00,18:29:00,Buff-throated_Salator,1,23
+Panama,Kyle,42,2023-02-08,Dusk,,6:40:00,18:29:00,Buff-throated_Saltator,1,23
 Panama,Jodie,37,2023-02-08,Dawn,,6:38:00,18:27:00 AM,Clay-colored_Thrush ,3,28
 Panama,Jodie,37,2023-02-08,Dawn,,6:38:00,18:27:00 AM,Red-crowned_Ant-Tanager,1,28
 Panama,Jodie,37,2023-02-08,Dawn,,6:38:00,18:27:00 AM,Black-headed_Saltator,3,28
