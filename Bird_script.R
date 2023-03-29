@@ -31,6 +31,12 @@ spp_list <-
   group_by(Location) %>%
   summarize(unique(Species))
 
+#total count of bird species in each location
+total_count <-
+  bird.data %>% 
+  group_by(Location) %>% 
+  summarize(Diversity = length(unique(Species)))
+
 ##### Create Diversity Data Frames #####
 
 #diversity per location per day
