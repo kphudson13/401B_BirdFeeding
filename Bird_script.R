@@ -72,7 +72,7 @@ summary(add_model)
 
 #run an ANOVA model with the interaction effect
 full_model <- aov(Diversity ~ Period * Location, 
-                 data = diversity_per)
+                  data = diversity_per)
 
 summary(full_model)
 
@@ -103,7 +103,7 @@ png("Location_Chart.png",
     res = 288)
 grid.table(summary_loc)
 dev.off()
-  
+
 #data frame for mean and sd per location and period
 summary_per <-
   diversity_per %>% 
@@ -126,7 +126,7 @@ png("Per_Chart.png",
     res = 288)
 grid.table(summary_per)
 dev.off()
-  
+
 ##### ANOVA and Tukey Table #####
 
 #create a data frame of the anova output 
@@ -143,7 +143,7 @@ for(i in 1:nrow(full_chart)) {
     full_chart[i,5] = "<0.05"
   }
 }
-  
+
 #remove that unneccesary p-value
 full_chart[4,5] <- "" 
 
@@ -172,13 +172,35 @@ TuChart <-
   mutate(`Adjusted P-Value` = 
            format(`Adjusted P-Value`, scientific = FALSE)) %>% 
   mutate(`Adjusted P-Value` = as.numeric(`Adjusted P-Value`))
-  
+
 #turn all the small p values into <0.05
 for(i in 1:nrow(TuChart)) {
   if(TuChart[i,4] < 0.05) {
     TuChart[i,4] = "<0.05"
   }
 }
+
+#set the order to reoder the pairwise analysis 
+pair_order <- c("Noon:Canada-Dawn:Canada", 
+                "Noon:Canada-Dusk:Canada",
+                "Dusk:Canada-Dawn:Canada",
+                "Dawn:Panama-Dawn:Canada",
+                "Dawn:Panama-Noon:Canada",
+                "Dawn:Panama-Dusk:Canada",
+                "Noon:Panama-Dawn:Canada",
+                "Noon:Panama-Noon:Canada",
+                "Noon:Panama-Dusk:Canada",
+                "Dusk:Panama-Dawn:Canada",
+                "Dusk:Panama-Noon:Canada",
+                "Dusk:Panama-Dusk:Canada",
+                "Noon:Panama-Dawn:Panama",
+                "Noon:Panama-Dusk:Panama",
+                "Dusk:Panama-Dawn:Panama")
+
+#reorder the row names
+TuChart <-
+  TuChart %>% 
+  arrange(factor(rownames(.), levels = pair_order))
 
 
 #export the summary stats
@@ -246,7 +268,7 @@ AOV_QQ <-
 
 #save the histogram as a png
 ggsave("ANOVA_QQ.png", AOV_QQ, width = 8, height = 5, dpi = 300)
-  
+
 ##### Letters for plot #####
 
 #create a data frame for the letters 
@@ -300,7 +322,7 @@ location_plot <-
              fill = Location)) +
   geom_violin(draw_quantiles = 0.5, 
               show.legend = FALSE,
-               width = 0.5) +
+              width = 0.5) +
   v_theme +
   scale_fill_manual(values = c("darkmagenta","slategrey"),
                     name="") +
@@ -308,7 +330,7 @@ location_plot <-
               alpha = 0.5,
               size = 1.3,
               width = 0.06)
-  
+
 
 location_plot
 
@@ -318,15 +340,15 @@ ggsave("Location_Plot.png", location_plot, width = 5, height = 5, dpi = 400)
 ##### Combined Plot #####
 
 #reorder the x axis
-order = c("Dawn", "Noon", "Dusk")
+period_order = c("Dawn", "Noon", "Dusk")
 
 #plot for location and period
 combined_plot <- ggplot(data = diversity_per, 
-                      aes(x = Period,
-                          y = Diversity,
-                          fill = Location)) +
+                        aes(x = Period,
+                            y = Diversity,
+                            fill = Location)) +
   geom_violin(draw_quantiles = 0.5) +
-  scale_x_discrete(limits = order) +
+  scale_x_discrete(limits = period_order) +
   scale_y_continuous(n.breaks = 7) +
   v_theme +
   geom_text(data = letters.df, 
@@ -334,7 +356,7 @@ combined_plot <- ggplot(data = diversity_per,
             size = 5,
             position = position_dodge(0.9)) +
   scale_fill_manual(values = c("darkmagenta","slategrey"),
-                  name="") +
+                    name="") +
   geom_point(position = position_jitterdodge(jitter.height = 0.15,
                                              jitter.width = 0.05,
                                              dodge.width = 0.9),
@@ -351,4 +373,4 @@ combined_plot
 
 #save the histogram as a png
 ggsave("Combined_Plot.png", combined_plot, width = 8, height = 5, dpi = 400)
-  
+
