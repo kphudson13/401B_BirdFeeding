@@ -104,6 +104,14 @@ png("Location_Chart.png",
 grid.table(summary_loc)
 dev.off()
 
+#set the row names for the descriptave statistics table
+summary_order <- c("Dawn:Canada",
+                   "Noon:Canada",
+                   "Dusk:Canada",
+                   "Dawn:Panama",
+                   "Noon:Panama", 
+                   "Dusk:Panama")
+
 #data frame for mean and sd per location and period
 summary_per <-
   diversity_per %>% 
@@ -117,12 +125,13 @@ summary_per <-
   as.data.frame() %>% 
   `row.names<-`(.$r_names) %>%   #how to set row names within a pipe
   subset(., select = -c(1)) %>%  #cut out the first column
-  mutate(across(c(1:2), round, 2))
-
+  mutate(across(c(1:2), round, 2)) %>% 
+  arrange(factor(rownames(.), levels = summary_order))
+  
 #export the summary stats
 png("Per_Chart.png", 
-    height = 90*nrow(summary_per), 
-    width = 400*ncol(summary_per),
+    height = 100*nrow(summary_per), 
+    width = 360*ncol(summary_per),
     res = 288)
 grid.table(summary_per)
 dev.off()
@@ -150,7 +159,7 @@ full_chart[4,5] <- ""
 #export the summary stats
 png("ANOVA_Chart.png", 
     height = 110*nrow(full_chart), 
-    width = 300*ncol(full_chart),
+    width = 280*ncol(full_chart),
     res = 288)
 grid.table(full_chart)
 dev.off()
@@ -202,11 +211,10 @@ TuChart <-
   TuChart %>% 
   arrange(factor(rownames(.), levels = pair_order))
 
-
 #export the summary stats
 png("Tukey_Chart.png", 
     height = 90*nrow(TuChart), 
-    width = 600*ncol(TuChart),
+    width = 510*ncol(TuChart),
     res = 288)
 grid.table(TuChart)
 dev.off()
