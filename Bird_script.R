@@ -35,44 +35,43 @@ spp_list <-
 total_count <-
   bird.data %>% 
   group_by(Location) %>% 
-  summarize(Diversity = length(unique(Species)))
+  summarize(Richness = length(unique(Species)))
 
-##### Create Diversity Data Frames #####
+##### Create Richness Data Frames #####
 
-#diversity per location per day
-diversity_loc <-
+#Richness per location per day
+Richness_loc <-
   bird.data %>%
   group_by(Location, Date) %>%
-  summarise(Diversity = length(unique(Species)))
+  summarise(Richness = length(unique(Species)))
 
 
-#diversity per session
-diversity_per <- 
+#Richness per session
+Richness_per <- 
   bird.data %>%
   group_by(Location, Period, Session) %>%
-  summarise(Diversity = length(unique(Species)))
-
+  summarise(Richness = length(unique(Species)))
 
 
 ##### Statistics #####
 
 #this will get overwritten but its one way to code a t-test
-t_model <- with(diversity_loc, 
-                t.test(Diversity[Location == "Canada"],
-                       Diversity[Location == "Panama"]))
+t_model <- with(Richness_loc, 
+                t.test(Richness[Location == "Canada"],
+                       Richness[Location == "Panama"]))
 
 #a t-test to see if there is a difference between the countries 
-t_model <- t.test(Diversity ~ Location, data = diversity_loc)
+t_model <- t.test(Richness ~ Location, data = Richness_loc)
 
 #run an additive ANOVA model 
-add_model <- aov(Diversity ~ Period + Location, 
-                 data = diversity_per)
+add_model <- aov(Richness ~ Period + Location, 
+                 data = Richness_per)
 
 summary(add_model)
 
 #run an ANOVA model with the interaction effect
-full_model <- aov(Diversity ~ Period * Location, 
-                  data = diversity_per)
+full_model <- aov(Richness ~ Period * Location, 
+                  data = Richness_per)
 
 summary(full_model)
 
@@ -87,10 +86,10 @@ tukey_out <- TukeyHSD(full_model, conf.level = 0.95)
 ##### Mean and SD Tables #####
 
 summary_loc <-
-  diversity_loc %>% 
+  Richness_loc %>% 
   group_by(Location) %>% 
-  summarise(Mean = mean(Diversity, na.rm=T), #adds the mean
-            SD = sd(Diversity, na.rm = T)) %>% #adds with sd
+  summarise(Mean = mean(Richness, na.rm=T), #adds the mean
+            SD = sd(Richness, na.rm = T)) %>% #adds with sd
   as.data.frame() %>% 
   `row.names<-`(.$Location) %>% #how to set row names within a pipe
   subset(., select = -c(1)) %>%  #cut out the first column
@@ -114,10 +113,10 @@ summary_order <- c("Dawn:Canada",
 
 #data frame for mean and sd per location and period
 summary_per <-
-  diversity_per %>% 
+  Richness_per %>% 
   group_by(Location, Period) %>% 
-  summarise(Mean = mean(Diversity, na.rm=T), #adds the mean
-            SD = sd(Diversity, na.rm = T)) %>% #adds with sd
+  summarise(Mean = mean(Richness, na.rm=T), #adds the mean
+            SD = sd(Richness, na.rm = T)) %>% #adds with sd
   unite("r_names", 
         Period:Location, 
         sep = ":", 
@@ -223,7 +222,7 @@ dev.off()
 
 #check for normality 
 T_Hist <- 
-  ggplot(diversity_loc, aes(x = Diversity, y = after_stat(density))) +
+  ggplot(Richness_loc, aes(x = Richness, y = after_stat(density))) +
   geom_histogram(binwidth = 1) +
   ylab("Density") +
   facet_grid(cols = vars(Location))
@@ -233,7 +232,7 @@ ggsave("T_Hist.png", T_Hist, width = 8, height = 4, dpi = 300)
 
 #QQ plot for standarized residuals 
 T_QQ <- 
-  ggplot(data.frame(residuals(t_model)), aes(sample = Diversity)) +
+  ggplot(data.frame(residuals(t_model)), aes(sample = Richness)) +
   geom_qq() + 
   geom_qq_line() +
   xlab("Theoretical Quantiles") +
@@ -246,7 +245,7 @@ T_QQ <-
 
 #check for normality 
 AOV_Hist <- 
-  ggplot(diversity_per, aes(x = Diversity, y = after_stat(density))) +
+  ggplot(Richness_per, aes(x = Richness, y = after_stat(density))) +
   geom_histogram(binwidth = 1) +
   ylab("Density") +
   facet_grid(cols = vars(Period), rows = vars(Location))
@@ -256,7 +255,7 @@ ggsave("ANOVA_Hist.png", AOV_Hist, width = 8, height = 5, dpi = 300)
 
 #QQ plot for standarized residuals not faceted
 AOV_QQ_Sing <- 
-  ggplot(full_model, aes(sample = Diversity)) +
+  ggplot(full_model, aes(sample = Richness)) +
   geom_qq() + 
   geom_qq_line() +
   xlab("Theoretical Quantiles") +
@@ -267,7 +266,7 @@ ggsave("ANOVA_QQ_Sing.png", AOV_QQ_Sing, width = 8, height = 5, dpi = 300)
 
 #QQ plot for standarized residuals 
 AOV_QQ <- 
-  ggplot(full_model, aes(sample = Diversity)) +
+  ggplot(full_model, aes(sample = Richness)) +
   geom_qq() + 
   geom_qq_line() +
   xlab("Theoretical Quantiles") +
@@ -296,9 +295,9 @@ colnames(letters.df)[1] <- "Letters"
 
 #create a data frame of the max values
 Maxs <-
-  diversity_per %>%
+  Richness_per %>%
   group_by(Location, Period) %>%
-  summarise(Max = max(Diversity))
+  summarise(Max = max(Richness))
 
 #match the max values to the letters data frame 
 for(i in 1:6){
@@ -320,13 +319,13 @@ v_theme <- theme(axis.line = element_line(colour = "black",
                  legend.background = element_blank(),
                  legend.title = element_text(face = "bold"),
                  axis.title = element_text(face = "bold"),
-                 plot.background = element_rect(fill = "grey90"))
+                 plot.background = element_rect(fill = "grey95"))
 
-#make a plot of diversity per location
+#make a plot of Richness per location
 location_plot <-
-  ggplot(data = diversity_loc, 
+  ggplot(data = Richness_loc, 
          aes(x = Location, 
-             y = Diversity, 
+             y = Richness, 
              fill = Location)) +
   geom_violin(draw_quantiles = 0.5, 
               show.legend = FALSE,
@@ -351,9 +350,9 @@ ggsave("Location_Plot.png", location_plot, width = 5, height = 5, dpi = 400)
 period_order = c("Dawn", "Noon", "Dusk")
 
 #plot for location and period
-combined_plot <- ggplot(data = diversity_per, 
+combined_plot <- ggplot(data = Richness_per, 
                         aes(x = Period,
-                            y = Diversity,
+                            y = Richness,
                             fill = Location)) +
   geom_violin(draw_quantiles = 0.5) +
   scale_x_discrete(limits = period_order) +
