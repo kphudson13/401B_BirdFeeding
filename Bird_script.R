@@ -1,3 +1,10 @@
+#Built April 2023 
+#Author: Kyle Hudson
+#Group members: Jodie ***** and Jenni *****
+#Class: REN R 401B, Northern Avian Ecology
+
+##### Load packages and data #####
+
 library(tidyverse)
 library(AICcmodavg) #to run AIC models
 library(gridExtra) #to export tables nicely
@@ -15,13 +22,11 @@ bird.data <- read.csv("Bird_Data.csv",
 #use stringr to remove underscores and whitespace
 bird.data$Species <-
   bird.data$Species %>%
-  str_replace_all(., "_", " ") %>%
-  str_squish(.) %>%
+  str_replace_all(., "_", " ") %>% #remove underscores
+  str_squish(.) %>% #remove spaces
   str_remove_all(., "[*]") %>%
   str_remove_all(., "Unknown") %>%
-  str_to_title(.)
-
-#capitalize the letters 
+  str_to_title(.) #capitalize the letters 
 
 ##### Check the data #####
 
@@ -93,7 +98,7 @@ summary_loc <-
   as.data.frame() %>% 
   `row.names<-`(.$Location) %>% #how to set row names within a pipe
   subset(., select = -c(1)) %>%  #cut out the first column
-  mutate(across(c(1:2), round, 2))
+  mutate(across(c(1:2), round, 2)) 
 
 #export the summary stats
 png("Location_Chart.png", 
@@ -135,7 +140,7 @@ png("Per_Chart.png",
 grid.table(summary_per)
 dev.off()
 
-##### ANOVA and Tukey Table #####
+##### ANOVA and Tukey Tables #####
 
 #create a data frame of the anova output 
 full_out <- summary(full_model)
@@ -308,8 +313,7 @@ for(i in 1:6){
   }
 }
 
-
-##### Location Plot #####
+##### Plots #####
 
 #set a theme
 v_theme <- theme(axis.line = element_line(colour = "black", 
@@ -338,13 +342,10 @@ location_plot <-
               size = 1.3,
               width = 0.06)
 
-
 location_plot
 
 #save the boxplot as a png
 ggsave("Location_Plot.png", location_plot, width = 5, height = 5, dpi = 400)
-
-##### Combined Plot #####
 
 #reorder the x axis
 period_order = c("Dawn", "Noon", "Dusk")
@@ -371,13 +372,10 @@ combined_plot <- ggplot(data = Richness_per,
              size = 1.3, 
              show.legend = FALSE) 
 
-
-#to change the shape of the fill legend but it doesnt work
-#guides(fill = guide_legend(override.aes = list(shape = 24)))
-
-
 combined_plot
 
 #save the histogram as a png
 ggsave("Combined_Plot.png", combined_plot, width = 8, height = 5, dpi = 400)
+
+
 
